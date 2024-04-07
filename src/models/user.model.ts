@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
+import { ISignup } from "../Types/Types";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new mongoose.Schema<ISignup>(
   {
     name: {
       type: String,
@@ -14,8 +15,14 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    token: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
 
 const UserModel = mongoose.model("user", userSchema);
+
+export default UserModel;

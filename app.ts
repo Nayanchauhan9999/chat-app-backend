@@ -18,6 +18,7 @@ const PORT = process.env.PORT || 8080;
 const app = express();
 const server = http.createServer(app);
 app.use(cors());
+app.use(express.json());
 export const io = new Server(server, {
   cors: {
     origin: "*",
@@ -26,12 +27,15 @@ export const io = new Server(server, {
 
 // handling message
 import "./src/socket/chat.socket.js";
+import { AuthRoutes } from "./src/routes";
 
 app.get("/", (req, res) => {
   res.json({
     message: "welcome",
   });
 });
+
+app.use("/auth", AuthRoutes);
 
 server.listen(PORT, () => {
   console.log("Server Running At http://localhost:" + PORT);

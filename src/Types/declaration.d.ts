@@ -5,6 +5,7 @@ declare global {
     interface ProcessEnv {
       PORT: number;
       DB_URL: string;
+      SECRET_KEY: string;
     }
   }
 }
