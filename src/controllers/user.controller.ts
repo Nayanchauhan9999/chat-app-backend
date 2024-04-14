@@ -4,7 +4,72 @@ import { signupValidator } from "../validators/auth.validator";
 import UserModel from "../models/user.model";
 import { BcryptMethods, generateToken } from "../utils/constant";
 
-export const LoginController = () => {};
+export const LoginController = async (req: Request, res: Response) => {
+  // get email and password from user
+  // find user by email to get hashed passowrd
+  // compare hashed password with user given password
+  // generate auth token and update token to user document
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(401).json({
+        message: "Email and password are required",
+      });
+    }
+
+    const findUserByEmail = await UserModel.findOne({ email });
+
+    // if user not found
+    if (!findUserByEmail) {
+      return res.status(401).json({
+        message: "User not found",
+      });
+    }
+
+    // compare hashed password with plain passowrd
+    const isPassowrdMatched = await BcryptMethods.compareHashAndPlainPassword(
+      password,
+      findUserByEmail.password
+    );
+
+    if (!isPassowrdMatched) {
+      return res.status(401).json({
+        message: "Email or password doesn't matched",
+      });
+    }
+
+    const token = generateToken({ _id: findUserByEmail._id });
+
+    if (!token) {
+      return res.status(501).json({
+        message: "Error while generate access token",
+      });
+    }
+
+    // if everything fine then update token to database
+    const user = await UserModel.findByIdAndUpdate(
+      findUserByEmail._id,
+      {
+        $set: {
+          token,
+        },
+      },
+      { new: true }
+    ).select("-password -__v");
+
+    return res.status(200).json({
+      message: "Login successfully",
+      statusCode: 200,
+      data: user,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Something went wrong",
+      statusCode: 500,
+    });
+  }
+};
 
 export const SignUpController = async (
   req: Request<{}, {}, ISignup>,
@@ -73,7 +138,7 @@ export const SignUpController = async (
     {
       new: true,
     }
-  );
+  ).select("-password -__v");
 
   return res.status(201).json({
     message: "signup successfull",
