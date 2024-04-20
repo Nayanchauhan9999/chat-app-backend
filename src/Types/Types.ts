@@ -1,3 +1,5 @@
+import type { Types } from "mongoose";
+
 export interface ISignup {
   email: string;
   name: string;
@@ -13,4 +15,13 @@ export interface IUser {
   updatedAt: Date;
   _id: string;
   password?: string;
+}
+
+export interface IMessage {
+  _id?: Types.ObjectId;
+  text: string;
+  senderId: Types.ObjectId;
+  groupId: Types.ObjectId;
+  createdAt?: Date;
+  updatedAt?: Date;
 }

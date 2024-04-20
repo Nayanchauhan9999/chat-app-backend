@@ -10,6 +10,9 @@ const messageSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: "user",
     },
+    groupId: {
+      type: mongoose.Schema.ObjectId,
+    },
   },
   {
     timestamps: true,

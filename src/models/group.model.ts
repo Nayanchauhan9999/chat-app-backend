@@ -18,10 +18,22 @@ const groupSchema = new mongoose.Schema(
       type: [mongoose.Schema.ObjectId],
       ref: "user",
     },
-    messages: {
-      type: [mongoose.Schema.ObjectId],
-      ref: "message",
-    },
+    messages: [
+      {
+        text: String,
+        groupId: String,
+        senderId: String,
+        createdAt: {
+          type: Date,
+          default: new Date(Date.now()),
+        },
+        updatedAt: {
+          type: Date,
+          default: new Date(Date.now()),
+        },
+        _id: mongoose.Schema.ObjectId,
+      },
+    ],
     groupKey: {
       type: String,
       unique: true,
