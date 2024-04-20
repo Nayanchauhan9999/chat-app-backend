@@ -4,3 +4,13 @@ export interface ISignup {
   password: string;
   token?: string;
 }
+
+export interface IUser {
+  createdAt: Date;
+  email: string;
+  name: string;
+  token: string;
+  updatedAt: Date;
+  _id: string;
+  password?: string;
+}

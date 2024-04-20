@@ -1,5 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { GroupModel } from "../models/group.model";
+import mongoose from "mongoose";
+import UserModel from "../models/user.model";
 
 export const generateToken = (arg: Record<string, any>): string => {
   const createToken = jwt.sign(arg, process.env.SECRET_KEY);
@@ -44,3 +47,27 @@ export class BcryptMethods {
 // };
 
 export const compareHashAndPlainPassword = async () => {};
+
+export const createPublicGroup = async () => {
+  try {
+    const groupName = "public group";
+    const groupKey = "group/public";
+
+    const checkGroupAlreadyExist = await GroupModel.findOne({
+      groupKey,
+    });
+
+    if (checkGroupAlreadyExist?.groupKey) {
+      return;
+    }
+
+    const getAllUsers = await UserModel.find({});
+    await GroupModel.create({
+      name: groupName,
+      groupKey: groupKey,
+      members: getAllUsers,
+    });
+  } catch (error) {
+    console.log("error while creating public group", error);
+  }
+};

@@ -27,8 +27,9 @@ export const io = new Server(server, {
 
 // handling message
 import "./src/socket/chat.socket.js";
-import { AuthRoutes } from "./src/routes";
-
+import { AuthRoutes, GroupRoutes } from "./src/routes";
+import { createPublicGroup } from "./src/utils/constant";
+createPublicGroup();
 app.get("/", (req, res) => {
   res.json({
     message: "welcome",
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/auth", AuthRoutes);
+app.use("/group", GroupRoutes);
 
 server.listen(PORT, () => {
   console.log("Server Running At http://localhost:" + PORT);

@@ -1,3 +1,6 @@
+import { HydratedDocument } from "mongoose";
+import { IUser } from "./Types";
+
 export {};
 
 declare global {
@@ -7,5 +10,11 @@ declare global {
       DB_URL: string;
       SECRET_KEY: string;
     }
+  }
+}
+
+declare module "express" {
+  export interface Request{
+    user?: HydratedDocument<IUser>
   }
 }

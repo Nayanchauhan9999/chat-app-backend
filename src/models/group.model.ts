@@ -22,6 +22,10 @@ const groupSchema = new mongoose.Schema(
       type: [mongoose.Schema.ObjectId],
       ref: "message",
     },
+    groupKey: {
+      type: String,
+      unique: true,
+    },
   },
   {
     timestamps: true,
