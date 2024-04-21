@@ -21,8 +21,8 @@ const groupSchema = new mongoose.Schema(
     messages: [
       {
         text: String,
-        groupId: String,
-        senderId: String,
+        groupId: mongoose.Schema.ObjectId,
+        senderId: { type: mongoose.Schema.ObjectId, ref: "user" },
         createdAt: {
           type: Date,
           default: new Date(Date.now()),

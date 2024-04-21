@@ -38,8 +38,16 @@ export const getGroupMessagesByGroupId = async (
         statusCode: 400,
       });
     }
-    const messages = await GroupModel.findById(req.query?.groupId);
-
+    const messages = await GroupModel.findById(req.query?.groupId)
+      .populate({
+        path: "members",
+        select: "-__v -updatedAt -password -createdAt -token",
+      })
+      .populate({
+        path: "messages.senderId",
+        select: "-__v -updatedAt -password -createdAt -token -email",
+      })
+      .exec();
     return res.status(200).json({
       message: "groups fetch successfully",
       statusCode: 200,

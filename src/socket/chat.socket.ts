@@ -40,7 +40,18 @@ io.on("connection", (socket) => {
       {
         new: true,
       }
-    );
+    )
+      .populate({
+        path: "members",
+        select: "-__v -updatedAt -password -createdAt -token",
+      })
+      .populate({
+        path: "messages.senderId",
+        select: "-__v -updatedAt -password -createdAt -token -email",
+      })
+      .exec();
+
+    console.log("groupdetails is", groupDetails);
     io.emit("message", groupDetails);
   });
 });
