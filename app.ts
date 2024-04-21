@@ -2,7 +2,7 @@ import express from "express";
 import { Server } from "socket.io";
 import http from "http";
 import cors from "cors";
-import { connectToDatabase } from "./src/utils/dbConnection";
+import { connectToDatabase } from "./src/utils/dbConnection.js";
 import dotenv from "dotenv";
 
 // .env configruration
@@ -27,8 +27,8 @@ export const io = new Server(server, {
 
 // handling message
 import "./src/socket/chat.socket.js";
-import { AuthRoutes, GroupRoutes } from "./src/routes";
-import { createPublicGroup } from "./src/utils/constant";
+import { AuthRoutes, GroupRoutes } from "./src/routes/index.js";
+import { createPublicGroup } from "./src/utils/constant.js";
 createPublicGroup();
 app.get("/", (req, res) => {
   res.json({

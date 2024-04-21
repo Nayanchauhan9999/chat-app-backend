@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import { io } from "../../app";
+import { io } from "../../app.js";
 import { IMessage } from "../Types/Types";
-import { GroupModel } from "../models/group.model";
+import { GroupModel } from "../models/group.model.js";
 
 io.on("connection", (socket) => {
   socket.on("message", async (message: IMessage) => {
@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
       _id: new mongoose.Types.ObjectId(),
     };
 
-    const res = await GroupModel.findByIdAndUpdate(
+    const groupDetails = await GroupModel.findByIdAndUpdate(
       message?.groupId,
       {
         $push: { messages: createMessageObject },
@@ -41,6 +41,6 @@ io.on("connection", (socket) => {
         new: true,
       }
     );
-    io.emit("message", res?.messages);
+    io.emit("message", groupDetails);
   });
 });
